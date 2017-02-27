@@ -1,0 +1,71 @@
+file JADParserNotes2017
+pja - 02-24-2017 orig
+given format:
+name "((" keyset ,+ ")" tagset ,+ ")" ;
+keyset/tagset format:
+name 
+{ of tableName columnName }
+{"[" value ,+ "]" }
+{''' description '''}
+
+parse into the following tuples
+tna
+[kn] == name,desc,[valset]
+[tn] == name,desc,[valset]
+[fkn] == name,refTname, refCname
+
+return (sets[tna,kn,tn,fkn])
+
+
+in basii
+jadP :-
+[[ 1 ]] pword tna ! 
+       // dbBraceCheck e @ "ok" = 
+       // keyset // tagset 
+       pword ")" = // actionSave . 
+[[ 2 ]] "error occurred on (( check " msg .
+;
+dbBraceCheck :-
+[[ 1 ]] pword "((" = e "ok" ! .
+[[ 2 ]] e "nok" ! .
+;
+
+keyset :- /* name {of ''' [} */  
+[[ 1 ]] kix 0 ! 
+        // keyset1 .
+;
+keyset1 :-
+[[ 1 ]] pword // kn*kix // keyset2 ...
+[[ 2 ]] kt1 @ 1 = kix++ tail . 
+[[ 3 ]] kt1 @ 2 = .
+;
+
+keyset2 :- 
+[[ 1 ]] pword ...
+[[ 1.1 ]] dup "of" = drop // pfk tail .
+[[ 2 ]] dup "[" = drop // keyVals tail .
+[[ 3 ]] dup "'''" = drop // keyDesc tail.
+[[ 4 ]] dup "," = drop kt1 1 ! .
+[[ 5 ]] dup ")" = drop kt1 2 ! .
+[[ 6 ]] "unexpected marker near " swap cat msg fail .
+;
+tagset :- /* name {of ''' [} */  
+[[ 1 ]] tix 0 ! 
+        // tagset1 .
+;
+tagset1 :-
+[[ 1 ]] pword // tn*tix // tagset2 ...
+[[ 2 ]] tgt1 @ 1 = tix++ tail . 
+[[ 3 ]] tgt1 @ 2 = .
+;
+
+tagset2 :- 
+[[ 1 ]] pword ...
+[[ 1.1 ]] dup "of" = drop // tgfk tail .
+[[ 2 ]] dup "[" = drop // tagVals tail .
+[[ 3 ]] dup "'''" = drop // tagDesc tail.
+[[ 4 ]] dup "," = drop tgt1 1 ! .
+[[ 5 ]] dup ")" = drop tgt1 2 ! .
+[[ 6 ]] "unexpected marker near " swap cat msg fail .
+;
+
