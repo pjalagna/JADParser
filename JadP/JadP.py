@@ -27,8 +27,10 @@ def jadT():
     #[[ 00 ]] init
     global nds
     nds = {}
+    nds['kn'] = {}
+    nds['kix'] = 0
     nds['tn'] = {}
-    nds['tix'] = -1
+    nds['tix'] = 0
     import fioiClass
     global fi
     fi = fioiClass.fio(filename)
@@ -109,8 +111,30 @@ getKeys :-
 [[ 1 ]] pword j ! ...
 [[ 2 ]] j[1] ',' = tail. 
 [[ 3 ]] j[1] ")"= getTags .
-[[ 4 ]] j[1] kn[kix+] ! getKeyData tail.
+[[ 4 ]] j[1] kn[+kix] ! getKeyData tail.
 ;
+"""
+def getKeys():
+    global fi,nds
+    whgetK = 0
+    while ( whgetK == 0 ):
+        nds['j'] = fi.fpword()
+        if (nds['j'][1] == ','):
+            #loop
+        elseif (nds['j'][1] == ")" ):
+            getTags()
+            whgetK = -1 #break
+        else:
+            nds['kix'] = nds['kix'] + 1
+            nds['kn'][nds['kix']] = {}
+            nds['kn'][nds['kix']]['name'] = nds['j'][1]
+            getKeyData()
+            #loop
+        #endif
+    #wend
+#end getKeys
+                      
+"""
 getKeyData :-
 [[ 1 ]] pword kd ! ...
 [[ 2 ]] kd=/* doComment tail. 
@@ -120,6 +144,34 @@ getKeyData :-
 [[ 6 ]] kd=) pushback .
 [[ 7 ]] ercode 'bad token getKeyData' ! .
 ;
+"""
+def getKeyData():
+    global fi,nds
+    whgetKD = 0
+    while (whgetKD == 0):
+        nds['kd'] = fi.fpword()
+        if ( nds['kd'][1] == '/*'):
+            doComment()
+            #loop
+        elseif ( nds['kd'][1] == "'''"):
+            getDesc()
+            #loop
+        elseif (nds['kd'][1] == ','):
+            fi.setIOX(nds['kd'][0]) # pushback
+            whgetKD = -1 #break
+        elseif (nds['kd'][1] == ')'):
+            fi.setIOX(nds['kd'][0]) # pushback
+            whgetKD = -1 #break
+         else:
+            nds['ercode'] = 'bad token table2'
+            logg(nds['ercode'])
+            whgetKD = -1 # break
+        #endif
+    #wend
+#end getKeyData
+                      
+                      
+"""
 getFK :- /* of t.c {( t.c = v )}
 [[ 1 ]] pword gfk ! ...
 [[ 2 ]] '.' gfkSplit kn[kix][fkt] ! kn[kix][fkc] ! getFK2 .
