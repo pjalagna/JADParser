@@ -1,0 +1,18 @@
+# file odin.notes2017.txt
+ODIN is a process that will accept xml files from forms into a database for extended processing.
+
+we took our vision from ODIN the norse god of wisdom, military and poetry. often cited as the god who would teach his disciples  to see a situation clearly, to loyally defend those truths and to enlighten their enemies; we saw in our system these same traits: to analyse for clarity; to create concise and reasoned chains of events; and to report that information in various ways.
+
+We also saw in Odin's weapons a methodology we could use. His scepter (really a facci or bundle of learning sticks) held the rules (runes) of the universe; all who sought his guidance swore an oath to those rules and their words and deeds were tested by those rules.
+His birds of the night guarded in the dark and from above (out of sight) giving Odin the ability to act swiftly to changing situations.
+
+for us the bundle of rules that tested a users words (information) and that would report on and make decisions about that information would allow our users to act swiftly. our Robotic systems like Odin's birds of the night remain out of sight but vigilant 24/7/365.
+
+So, Odin - our system - is an adaptive DSS that will apply rules to  qualify , monitor, enact and alert users.
+
+where:
+- "qualify" is understood to mean that rules will be applied to determine if a document (such as a contract) contains its pertinent elements. 
+And "monitor" is understood to mean that a robotic system will apply determination and decision rules against all of the users documents.
+And "alert" is understood to mean that processes will be applied to communicate to a user when provisions of the document are enacted
+And "enact" is understood to mean that rules will be applied to change the external environment thru the output of some device.
+
