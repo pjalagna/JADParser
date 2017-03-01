@@ -1,7 +1,19 @@
 # file tDef.py table def parser
+""" JadT - asks for filename """
 import time
 global ts
 ts = time
+def ask(token):
+    j = raw_input(token+ "? ")
+    return(j)
+#ask
+def pword():
+    # adds logg to fetch
+    global fi
+    j = fi.fpword()
+    logg('pword = (' + j.__str__() + ')')
+    return(j)
+#end pword
 def logg(msg):
     global ts
     print("(" + ts.asctime() + ")[" + msg + ']')
@@ -11,12 +23,38 @@ def doComment():
     # capture and print comment
     # /* already captured
     global fi,nds
-    fo = fi.ioxGet()
+    fo = fi.fioxGet()
     aa = fi.ftill('*/')
-    sd = fi.fpword()
+    sd = pword()
     bo = sd[2]
+    # position at fo
+    fi.fh.seek(fo)
+    # rd = read for bo-fo
+    rd = fi.fh.read(bo-fo)
+    # print rd
+    print (rd) # prints trailing */
+    # position at bo
+    fi.fioxSet(bo)
     # needs work 
 #end doComment
+def getDesc():
+    # capture and return description
+    # beginning '''  already captured
+    global fi,nds
+    logg('getDesc')
+    fo = fi.fioxGet()
+    aa = fi.ftill("'''")
+    sd = pword()
+    bo = sd[0] # before '''
+    bo1 = sd[2] # after '''
+    # position at fo
+    fi.fh.seek(fo)
+    # rd = read for bo-fo
+    rd = fi.fh.read(bo-fo)
+    # position at bo
+    fi.fioxSet(bo1)
+    return(rd) 
+#end getDesc
 
 """
 jadT :-
@@ -38,19 +76,20 @@ def jadT():
     nds['tix'] = 0
     import fioiClass
     global fi
+    filename = ask('filename')
     fi = fioiClass.fio(filename)
     fi.fwhite()
     jadt = 0 # tail marker
     while (jadt == 0):
         # [[ 0 ]]
-        nds['jd'] = fi.fpword()
+        nds['jd'] = pword()
         if (nds['jd'][1] == '/*'):
             doComment()
             #tail .
-        elseif ( nds['jd'][1] == 'TABLE'):
+        elif ( nds['jd'][1] == 'TABLE' ) :
             doTable()
             # tail .
-        elseif ( nds['jd'][1] == '@endend'):
+        elif ( nds['jd'][1] == '@endend'):
             nds['ercode'] = 'ended'
             jadt = -1 # break
         else:
@@ -73,9 +112,10 @@ def doTable():
    logg('begin doTable')
    # [[ 1 ]]
    nds['tix'] = nds['tix'] + 1
-   dot = fi.fpword()
+   dot = pword()
    nds['tn'][nds['tix']] = {}
    nds['tn'][nds['tix']]['tname'] = dot[1]
+   logg('nds ' + nds.__str__() )
    table2()
    logg('end doTable')
 #end doTable
@@ -94,18 +134,19 @@ def table2():
     wht2 = 0
     while (wht2 == 0):
         #[[0]]
-        j2 = fi.fpword()
+        j2 = pword()
         #[[1]]
         if (j2[1] == '/*'):
             doComment()
             #loop
         #[[2]]
-        elseif (j2[1] == "'''"):
-            nds['tn'][nds['tix']['desc'] = getDesc()
+        elif (j2[1] == "'''"):
+            nds['tn'][nds['tix']]['desc'] = getDesc()
+            logg('nds ' + nds.__str__() )
             #loop
-        elseif (j2[1] == "(("):
+        elif (j2[1] == "(("):
             getKeys()
-            table3()
+            #--pja -- table3()
             wht2 = -1 #break
         else:
             nds['ercode'] = 'bad token table2'
@@ -129,16 +170,19 @@ def getKeys():
     logg('begin getKeys')
     whgetK = 0
     while ( whgetK == 0 ):
-        nds['j'] = fi.fpword()
+        nds['j'] = pword()
         if (nds['j'][1] == ','):
+            nop = 0 # syntax filler
             #loop
-        elseif (nds['j'][1] == ")" ):
-            getTags()
+        elif (nds['j'][1] == ")" ):
+            #--pja -- getTags()
             whgetK = -1 #break
         else:
             nds['kix'] = nds['kix'] + 1
-            nds['kn'][nds['kix']] = {}
-            nds['kn'][nds['kix']]['name'] = nds['j'][1]
+            nds['tn'][nds['tix']]['kn'] = {}
+            nds['tn'][nds['tix']]['kn'][nds['kix']] = {}
+            nds['tn'][nds['tix']]['kn'][nds['kix']]['name'] = nds['j'][1]
+            logg('nds ' + nds.__str__() )
             getKeyData()
             #loop
         #endif
@@ -162,20 +206,20 @@ def getKeyData():
     logg('begin getKeyData')
     whgetKD = 0
     while (whgetKD == 0):
-        nds['kd'] = fi.fpword()
+        nds['kd'] = pword()
         if ( nds['kd'][1] == '/*'):
             doComment()
             #loop
-        elseif ( nds['kd'][1] == "'''"):
-            getDesc()
+        elif ( nds['kd'][1] == "'''"):
+            nds['tn'][nds['tix']]['kn'][nds['kix']]['desc']  = getDesc()
             #loop
-        elseif (nds['kd'][1] == ','):
+        elif (nds['kd'][1] == ','):
             fi.setIOX(nds['kd'][0]) # pushback
             whgetKD = -1 #break
-        elseif (nds['kd'][1] == ')'):
-            fi.setIOX(nds['kd'][0]) # pushback
+        elif (nds['kd'][1] == ')'):
+            fi.fioxSet(nds['kd'][0]) # pushback
             whgetKD = -1 #break
-         else:
+        else:
             nds['ercode'] = 'bad token table2'
             logg(nds['ercode'])
             whgetKD = -1 # break

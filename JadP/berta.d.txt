@@ -1,0 +1,19 @@
+/* file Berta.D.txt */
+TABLE bundle ''' a collection of rules that can be activated '''
+       (( BID ''' identifier of the bundle ''' 
+         ) 
+          cold of lov.val(lov.lovid='yn')  ''' if yes this bundle will be activated on startup ''' 
+          , 
+          ready of lov.val(lov.lovid='yn')  ''' set by rule judgement ''' 
+          ) 
+;
+TABLE rule ''' a set of tests to determine an action
+       (( RID ''' identifier of the rule '''
+       ) )
+;
+TABLE br ''' the join of bundles and rules. bundles --< br >0-- rules ''' 
+    (( BID of bundle.BID , RID of rule.RID ) )
+;
+@endend
+
+
