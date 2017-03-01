@@ -1,6 +1,10 @@
 # file tDef.py table def parser
+import time
+global ts
+ts = time
 def logg(msg):
-    print(msg)
+    global ts
+    print("(" + ts.asctime() + ")[" + msg + ']')
     j = raw_input('? ')
 #end logg
 def doComment():
@@ -26,6 +30,7 @@ jadT :-
 def jadT():
     #[[ 00 ]] init
     global nds
+    logg('begin jadT')
     nds = {}
     nds['kn'] = {}
     nds['kix'] = 0
@@ -54,6 +59,7 @@ def jadT():
             jadt = -1 # break
         #endif
     #wend
+    logg('end jadT')
     return(nds)
 #end jadT
 """
@@ -64,12 +70,14 @@ doTable :-
 """
 def doTable():
    global fi,nds
+   logg('begin doTable')
    # [[ 1 ]]
    nds['tix'] = nds['tix'] + 1
    dot = fi.fpword()
    nds['tn'][nds['tix']] = {}
    nds['tn'][nds['tix']]['tname'] = dot[1]
    table2()
+   logg('end doTable')
 #end doTable
 """
 table2 :-
@@ -82,6 +90,7 @@ table2 :-
 """
 def table2():
     global fi,nds
+    logg('begin Table2')
     wht2 = 0
     while (wht2 == 0):
         #[[0]]
@@ -104,6 +113,7 @@ def table2():
             wht2 = -2 #break
         #endif
     #wend
+    logg('end Table2')
 #end table2
         
 """
@@ -116,6 +126,7 @@ getKeys :-
 """
 def getKeys():
     global fi,nds
+    logg('begin getKeys')
     whgetK = 0
     while ( whgetK == 0 ):
         nds['j'] = fi.fpword()
@@ -132,6 +143,7 @@ def getKeys():
             #loop
         #endif
     #wend
+    logg('end getKeys')
 #end getKeys
                       
 """
@@ -147,6 +159,7 @@ getKeyData :-
 """
 def getKeyData():
     global fi,nds
+    logg('begin getKeyData')
     whgetKD = 0
     while (whgetKD == 0):
         nds['kd'] = fi.fpword()
@@ -168,6 +181,7 @@ def getKeyData():
             whgetKD = -1 # break
         #endif
     #wend
+    logg('end getKeyData')
 #end getKeyData
                       
                       
