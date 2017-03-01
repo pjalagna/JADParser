@@ -1,0 +1,22 @@
+# file todo.txt
+# pja 02-28-2017 orig
+#
+/* used grep ":-" file > outfile
+   and  grep "def" file >> outfile
+names that match are coded
+*/
+jadT :-def jadT():
+doTable :-def doTable():
+table2 :-def table2():
+getKeys :-
+getKeyData :-
+getFK :- /* of t.c {( t.c = v )} */
+getFK2 :-
+gfk3 :-
+getTags :- "(" na ''' /* , ) ; */
+getTagData :-
+getTagFK :- /* of t.c {( t.c = v )}
+getTagFK2 :-
+gfkT3 :-
+# file tDef.py table def parser
+

@@ -200,14 +200,15 @@ gfk3 :-
         kn[kix][fklovt] ! kn[kix][fklovc] !
         pword gfk4 ! gfk4== 
         pword gfk5 ! kn[kix][fklovV] !
-        pword gfk6 ! =) . 
+        pword gfk6 ! =) 
+        pword gfk7 ! =; . 
 [[ 2 ]] ercode 'bad token at gfk3' ! .
 ;
 getTags :- "(" na ''' /* , ) ; */
 [[ 1 ]] pword j ! ...
 [[ 2 ]] j[1] ',' = tail. 
-[[ 3 ]] j[1] ")"= pword =; tn++ .
-[[ 4 ]] j[1] tagn[tix+] ! gettTagData tail.
+[[ 3 ]] j[1] =")" pword =; .
+[[ 4 ]] j[1] tagn[+tix] ! gettTagData tail.
 ;
 getTagData :-
 [[ 1 ]] pword tagD ! ...
@@ -228,12 +229,13 @@ getTagFK2 :-
 [[ 3 ]] pushback .
 ;
 gfkT3 :-
-[[ 1 ]] pword gfk3 ! '.' gfk3split
+[[ 1 ]] pword gft3 ! '.' gft3split
         tagN[tagIX][fklovt] ! tagN[tagIX][fklovc] !
-        pword gfk4 ! gfk4== 
-        pword gfk5 ! tagN[tagIX][fklovV] !
-        pword gfk6 ! =) . 
-[[ 2 ]] ercode 'bad token at gfk3' ! .
+        pword gft4 ! gft4== 
+        pword gft5 ! tagN[tagIX][fklovV] !
+        pword gft6 ! =) 
+        pword gft7 ! =; . 
+[[ 2 ]] ercode 'bad token at gft3' ! .
 ;
 
 """
