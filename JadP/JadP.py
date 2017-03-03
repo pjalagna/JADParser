@@ -58,6 +58,13 @@ def getDesc():
 
 """
 jadT :-
+[[ 1 ]] init
+        jadT2 
+        return(nds)
+        .
+;
+
+jadT2 :-
 [[ 0 ]] pword jd ! ...
 [[ 1 ]] jd=/* doComment tail. 
 [[ 2 ]] jd=TABLE doTable tail. 
@@ -65,20 +72,26 @@ jadT :-
 [[ 4 ]] ercode 'bad token jadT'  .
 ;
 """
+
 def jadT():
-    #[[ 00 ]] init
+    #[[ 1 ]] init
     global nds
     logg('begin jadT')
     nds = {}
-    nds['kn'] = {}
-    nds['kix'] = 0
     nds['tn'] = {}
     nds['tix'] = 0
+    nds['kix'] = 0
     import fioiClass
     global fi
     filename = ask('filename')
     fi = fioiClass.fio(filename)
     fi.fwhite()
+    jadT2
+    return(nds)
+#end jadT
+
+def jadT2():
+    logg('begin jadT2')
     jadt = 0 # tail marker
     while (jadt == 0):
         # [[ 0 ]]
@@ -98,8 +111,8 @@ def jadT():
             jadt = -1 # break
         #endif
     #wend
-    logg('end jadT')
-    return(nds)
+    logg('end jadT2')
+
 #end jadT
 """
 
@@ -146,7 +159,7 @@ def table2():
             #loop
         elif (j2[1] == "(("):
             getKeys()
-            #--pja -- table3()
+            #pja  -- table3()
             wht2 = -1 #break
         else:
             nds['ercode'] = 'bad token table2'
@@ -213,6 +226,8 @@ def getKeyData():
         elif ( nds['kd'][1] == "'''"):
             nds['tn'][nds['tix']]['kn'][nds['kix']]['desc']  = getDesc()
             #loop
+        elif ( nds['kd'][1] == "of"):
+            getPFK()
         elif (nds['kd'][1] == ','):
             fi.setIOX(nds['kd'][0]) # pushback
             whgetKD = -1 #break
@@ -230,7 +245,7 @@ def getKeyData():
                       
                       
 """
-getFK :- /* of t.c {( t.c = v )}
+getPFK :- /* of t.c {( t.c = v )}
 [[ 1 ]] pword gfk ! ...
 [[ 2 ]] '.' gfkSplit kn[kix][fkt] ! kn[kix][fkc] ! getFK2 .
 ;
@@ -248,6 +263,48 @@ gfk3 :-
         pword gfk7 ! =; . 
 [[ 2 ]] ercode 'bad token at gfk3' ! .
 ;
+
+"""
+def getPFK():
+    #of t.c {( t.c = v )}
+    # '.' gfkSplit
+    global fi,nds
+    logg('begin getPFK')
+    r = pword()
+    # split at '.'
+    j = r[1].split('.')
+    nds['tn'][nds['tix']]['kn'][nds['kix']]['pfkTable'] = j[0]
+    nds['tn'][nds['tix']]['kn'][nds['kix']]['pfkCol'] = j[1]
+    #{( t.c = v )} aka getPFK2
+    m = pword()
+    if (m[1] == "("):
+        n = pword()
+        n2 = n[1].split('.')
+        nds['tn'][nds['tix']]['kn'][nds['kix']]['pfkLTable'] = n2[0]
+        nds['tn'][nds['tix']]['kn'][nds['kix']]['pfkLCol'] = n2[1]
+        n3 = pword()
+        if (n3[1] != '='):
+            #err bad format
+        else:
+            n4 = pword()
+            nds['tn'][nds['tix']]['kn'][nds['kix']]['pfkLVal'] = n4[1]
+        #endif
+        n5 = pword()
+        if (n5[1] != ')'):
+            #er bad format
+            nds['ercode'] = 'bad token getPFK expected ")" '
+            logg(nds['ercode'])
+            nop = -1
+        else:
+            nop = 1
+        #endif
+    else:
+        #pushback
+        fi.setIOX(m[0])
+    #endif
+#end getPFK
+"""
+
 getTags :- "(" na ''' /* , ) ; */
 [[ 1 ]] pword j ! ...
 [[ 2 ]] j[1] ',' = tail. 
