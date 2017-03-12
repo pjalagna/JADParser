@@ -1,4 +1,4 @@
-# file tDef.py table def parser
+# file jadP.py table def parser
 """ JadT - asks for filename """
 import time
 global ts
