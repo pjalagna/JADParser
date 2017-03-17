@@ -1,0 +1,39 @@
+jadT
+/* file jadT.basii.txt
+pja 3-17-2017 orig
+
+this script will parse the jad table statement
+TABLE <name> {@ description @}  (( keystuff commaKeystuff ) tagstuff commaTagstuff ) ;
+*/
+/* helper routines */
+doComment :-
+[[ 1 ]] pword ...
+[[ 2 ]] "*/" = .
+[[ 3 ]] tail. .
+;
+abort :-
+[[ 1 ]] msg "exit" endcode .
+;
+
+/* ----------------------------------- */
+jadT :-
+[[ 1 ]] init jadT0 .
+;
+
+jadT0 :- 
+[[ 1 ]] pword ... .
+[[ 2 ]] dup "/*" = drop doComment tail. .
+[[ 3 ]] dup "TABLE" = drop jadT1 tail. .
+[[ 4 ]] "error at jadT0" abort .
+;
+jadT1 ;-
+[[ 1 ]] pword ... .
+[[ 2 ]] dup "((" = drop "expected table name not given at jadT1" abort .
+[[ 3 ]] "TableName" ! jadT2 .
+;
+jadT2 :-
+[[ 1 ]] pword ... .
+[[ 2 ]] "((" = keystuff commaKeystuff jadT3 .
+[[ 3 ]] "bad format jadT2 " abort .
+;
+
