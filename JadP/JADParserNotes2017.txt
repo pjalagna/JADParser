@@ -1,21 +1,8 @@
 file JADParserNotes2017
-pja 03-27-2017 expanded by type tokens
+pja 03-27-2017 -moved jadT to jadx notes
+---------------expanded by type tokens
 pja - 02-24-2017 orig
-given format:
-"TABLE" name "((" keyset ,+ ")" tagset ,+ ")" ;
-keyset/tagset format:
-name 
-{ of tableName columnName }
-{"[" value ,+ "]" }
-{''' description '''}
-
-parse into the following tuples
-tna
-[kn] == name,desc,[valset]
-[tn] == name,desc,[valset]
-[fkn] == name,refTname, refCname
-
-return (sets[tna,kn,tn,fkn])
+FORMAT MOVED TO JADX
 
 
 in basii
