@@ -1,0 +1,43 @@
+JADX methods
+pja 03-27-2017 original
+
+overview - 
+during a JAD session 3 artifacts are collected
+1- what information is to be retained (JADT)
+2- what processes are to be used (JADP)
+3- what information is to be presented on screens and reports (JADS)
+
+JADT
+Format us 
+"TABLE" name "((" keyset ,+ ")" tagset ,+ ")" ;
+keyset/tagset format:
+name 
+{ of tableName columnName }
+{"[" value ,+ "]" }
+{''' description '''}
+
+parse into the following tuples
+tna
+[kn] == name,desc,[valset]
+[tn] == name,desc,[valset]
+[fkn] == name,refTname, refCname
+
+return (sets[tna,kn,tn,fkn])
+
+JADP
+pure BASII(S) format
+paragraphName :- [[ clauseName ]] verbName . ;
+-- verbs are repeated in a clause
+-- clauses are repeated, given in order of trial and must be uniquily named within a paragraph
+-- paragraph names must be unique
+
+JADS
+formed from an excel addressed grid IE <td id="a1" used="no"></td> 
+-- with partial compilation/transformation into an PHP/html/js/jquery screen
+JADSClass
+-- behaviors
+---- newGrid 
+---- add (gridAddress, typeString )
+---- typeWizard()
+---- showGrid
+---- resetGridAddress(gridAddress) # reverts gridAddress to <td id="a1" used="no"></td> 
