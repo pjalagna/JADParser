@@ -1,7 +1,8 @@
 file JADParserNotes2017
+pja 03-27-2017 expanded by type tokens
 pja - 02-24-2017 orig
 given format:
-name "((" keyset ,+ ")" tagset ,+ ")" ;
+"TABLE" name "((" keyset ,+ ")" tagset ,+ ")" ;
 keyset/tagset format:
 name 
 { of tableName columnName }
