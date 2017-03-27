@@ -1,12 +1,15 @@
 JADX methods
 pja 03-27-2017 original
--------------- added DBScreens 
+-------------- added DBScreens
+-------------- added workflow
 
 overview - 
-during a JAD session 3 artifacts are collected
+during a JAD session 4 artifacts are collected
 1- what information is to be retained (JADT)
 2- what processes are to be used (JADP)
 3- what information is to be presented on screens and reports (JADS)
+4- the workflow of entry, notifacation and presentation 
+---- to support/verify and administer the business methods and procedures (JADW)
 
 JADT
 Format us 
@@ -43,3 +46,7 @@ JADSClass
 ---- showGrid
 ---- resetGridAddress(gridAddress) # reverts gridAddress to <td id="a1" used="no"></td> 
 ---- DBScreens(dbName)  # creates a maintenance screen for every table in a database
+
+
+JADW
+aka BERTA (see link )
