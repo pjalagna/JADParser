@@ -1,5 +1,6 @@
 JADX methods
 pja 03-27-2017 original
+-------------- added DBScreens 
 
 overview - 
 during a JAD session 3 artifacts are collected
@@ -41,3 +42,4 @@ JADSClass
 ---- typeWizard()
 ---- showGrid
 ---- resetGridAddress(gridAddress) # reverts gridAddress to <td id="a1" used="no"></td> 
+---- DBScreens(dbName)  # creates a maintenance screen for every table in a database
